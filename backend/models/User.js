@@ -3,9 +3,24 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
-    name: String,
-    email: String,
-    password: String,
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+      minLength: 3,
+    },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      minLength: 5,
+    },
     profileImage: String,
     bio: String,
   },
