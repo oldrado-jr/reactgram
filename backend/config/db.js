@@ -7,8 +7,6 @@ const conn = async () => {
     console.log('Conectou ao banco!');
   } catch (error) {
     console.error(error);
-  } finally {
-    await mongoose.disconnect();
   }
 };
 
