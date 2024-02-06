@@ -56,8 +56,23 @@ const register = async (req, res) => {
 };
 
 // Sign user in
-const login = (req, res) => {
-  res.send('Login');
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  // Check if credentials are valid
+  if (!(user && await bcrypt.compare(password, user.password))) {
+    res.status(401).json({ errors: ['Credenciais inválidas.'] });
+    return;
+  }
+
+  // Return user with token
+  res.status(200).json({
+    id: user._id,
+    profileImage: user.profileImage,
+    token: generateToken(user._id),
+  });
 };
 
 module.exports = {
