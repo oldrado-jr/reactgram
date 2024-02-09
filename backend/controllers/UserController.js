@@ -89,8 +89,7 @@ const getCurrentUser = (req, res) => {
 const update = async (req, res) => {
   const reqUser = req.user;
 
-  const user = await User.findById(new mongoose.Types.ObjectId(reqUser.id))
-    .select('-password');
+  const user = await User.findById(reqUser.id).select('-password');
 
   const { name, password, bio } = req.body;
 
