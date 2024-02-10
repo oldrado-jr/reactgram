@@ -7,7 +7,8 @@ const {
   deletePhoto,
   getAllPhotos,
   getPhotoById,
-  updatePhoto
+  updatePhoto,
+  likePhoto
 } = require('../controllers/PhotoController');
 
 // Middlewares
@@ -38,5 +39,6 @@ router.put(
   validate,
   updatePhoto
 );
+router.patch('/:id/likes', authGuard, likePhoto);
 
 module.exports = router;
