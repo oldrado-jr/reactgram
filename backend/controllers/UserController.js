@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
 
 const User = require('../models/User');
 const Photo = require('../models/Photo');
@@ -90,7 +89,7 @@ const getCurrentUser = (req, res) => {
 const update = async (req, res) => {
   const reqUser = req.user;
 
-  const user = await User.findById(reqUser.id).select('-password');
+  const user = await User.findById(reqUser._id).select('-password');
 
   const { name, password, bio } = req.body;
 
@@ -125,20 +124,15 @@ const update = async (req, res) => {
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
-  try {
-    const user = await User.findById(new mongoose.Types.ObjectId(id))
-      .select('-password');
+  const user = await User.findById(id).select('-password');
 
-    // Check if user exists
-    if (!user) {
-      res.status(404).json({ errors: ['Usuário inexistente!'] });
-      return;
-    }
-
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(400).json({ errors: ['Id inválido!'] });
+  // Check if user exists
+  if (!user) {
+    res.status(404).json({ errors: ['Usuário inexistente!'] });
+    return;
   }
+
+  res.status(200).json(user);
 };
 
 // Get user photos
