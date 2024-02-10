@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
 const User = require('../models/User');
+const Photo = require('../models/Photo');
 
 const jwtSecret = process.env.JWT_SECRET || '';
 
@@ -140,10 +141,20 @@ const getUserById = async (req, res) => {
   }
 };
 
+// Get user photos
+const getUserPhotos = async (req, res) => {
+  const { id } = req.params;
+
+  const photos = await Photo.find({ userId: id }).sort([['createdAt', -1]]).exec();
+
+  res.status(200).json(photos);
+};
+
 module.exports = {
   register,
   login,
   getCurrentUser,
   update,
   getUserById,
+  getUserPhotos,
 };
