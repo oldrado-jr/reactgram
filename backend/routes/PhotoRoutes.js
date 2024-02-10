@@ -8,7 +8,8 @@ const {
   getAllPhotos,
   getPhotoById,
   updatePhoto,
-  likePhoto
+  likePhoto,
+  commentPhoto
 } = require('../controllers/PhotoController');
 
 // Middlewares
@@ -17,7 +18,8 @@ const imageUpload = require('../middlewares/imageUpload');
 const validate = require('../middlewares/handleValidation');
 const {
   photoInsertValidation,
-  photoUpdateValidation
+  photoUpdateValidation,
+  commentValidation
 } = require('../middlewares/photoValidations');
 
 // Routes
@@ -40,5 +42,12 @@ router.put(
   updatePhoto
 );
 router.patch('/:id/likes', authGuard, likePhoto);
+router.patch(
+  '/:id/comments',
+  authGuard,
+  commentValidation(),
+  validate,
+  commentPhoto
+);
 
 module.exports = router;
