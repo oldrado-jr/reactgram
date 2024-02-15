@@ -1,5 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+// Components
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+
+// Pages
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -10,11 +15,15 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
+        <Navbar />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+        <Footer />
       </BrowserRouter>
     </>
   );

@@ -3,9 +3,18 @@ body {
   padding: 0;
   box-sizing: border-box;
   background: #121212;
+  color: #fafafa;
 }
 
 body * {
   font-family: 'Roboto', sans-serif;
-  color: #fff;
+}
+
+a {
+  color: #fafafa;
+  text-decoration: none;
+}
+
+menu {
+  list-style: none;
 }
