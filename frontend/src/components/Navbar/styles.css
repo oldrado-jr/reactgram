@@ -14,9 +14,8 @@
 
 #search-form svg {
   position: absolute;
-  top: 2px;
+  top: 10px;
   left: 9px;
-  color: #000;
 }
 
 #search-form input {

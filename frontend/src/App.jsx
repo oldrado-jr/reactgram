@@ -6,8 +6,8 @@ import Footer from './components/Footer';
 
 // Pages
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
 
 import './App.css';
 
