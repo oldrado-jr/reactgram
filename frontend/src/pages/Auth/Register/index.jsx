@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Message from '../../../components/Message';
 
 import { register, reset } from '../../../slices/authSlice';
 
@@ -14,7 +16,7 @@ function Register() {
 
   const dispatch = useDispatch();
 
-  // const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,10 +71,9 @@ function Register() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <input
-          type="submit"
-          value="Cadastrar"
-        />
+        {!loading && <input type="submit" value="Cadastrar" />}
+        {loading && <input type="submit" value="Aguarde..." disabled />}
+        {error && <Message msg={error} type="error" />}
       </form>
       <p>
         Já tem conta? <Link to="/login">Clique aqui.</Link>
