@@ -8,7 +8,7 @@ import Message from '../../components/Message';
 
 import './styles.css';
 
-function Profile() {
+function EditProfile() {
   const dispatch = useDispatch();
 
   const { user, error, loading, message } = useSelector((state) => state.user);
@@ -146,4 +146,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default EditProfile;
