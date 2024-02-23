@@ -1,7 +1,7 @@
 export const api = import.meta.env.VITE_API_ENDPOINT || '';
 export const uploads = import.meta.env.VITE_UPLOAD_ENDPOINT || '';
 
-export const requestConfig = (method, data, token = null, image = null) => {
+export const requestConfig = (method, data, token = null, image = false) => {
   let config;
 
   if (image) {

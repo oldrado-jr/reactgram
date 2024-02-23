@@ -59,11 +59,9 @@ function EditProfile() {
     // build form data
     const formData = new FormData();
 
-    const userFormData = Object.keys(userData).forEach(
+    Object.keys(userData).forEach(
       (key) => formData.append(key, userData[key])
     );
-
-    formData.append('user', userFormData);
 
     dispatch(updateProfile(formData));
 
