@@ -1,9 +1,12 @@
-import { useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { BsFillEyeFill, BsPencilFill, BsXLg } from 'react-icons/bs';
 
 import { getUserDetails } from '../../slices/userSlice';
+import { getUserPhotos, publishPhoto, resetMessage } from '../../slices/photoSlice';
 import { uploads } from '../../utils/config';
+import Message from '../../components/Message';
 
 import './styles.css';
 
@@ -14,18 +17,55 @@ function Profile() {
 
   const { user, loading } = useSelector((state) => state.user);
   const { user: userAuth } = useSelector((state) => state.auth);
+  const {
+    photos,
+    loading: loadingPhoto,
+    message: messagePhoto,
+    error: errorPhoto,
+  } = useSelector((state) => state.photo);
+
+  const [title, setTitle] = useState('');
+  const [image, setImage] = useState('');
 
   // New form end edit form refs
   const newPhotoForm = useRef();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   // Load user data
   useEffect(() => {
     dispatch(getUserDetails(id));
+    dispatch(getUserPhotos(id));
   }, [dispatch, id]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const photoData = {
+      title,
+      image,
+    };
+
+    // build form data
+    const formData = new FormData();
+
+    Object.keys(photoData).forEach(
+      (key) => formData.append(key, photoData[key])
+    );
+
+    dispatch(publishPhoto(formData));
+
+    setTitle('');
+
+    setTimeout(() => {
+      dispatch(resetMessage());
+    }, 2000);
+  };
+
+  // Change image state
+  const handleFile = (e) => {
+    const image = e.target.files[0];
+
+    setImage(image);
+  };
 
   if (loading) {
     return <p>Carregando...</p>;
@@ -52,17 +92,54 @@ function Profile() {
             <form onSubmit={handleSubmit}>
               <label>
                 <span>Título para a foto:</span>
-                <input type="text" placeholder="Insira um título" />
+                <input
+                  type="text"
+                  placeholder="Insira um título"
+                  value={title || ''}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
               </label>
               <label>
                 <span>Imagem:</span>
-                <input type="file" />
+                <input type="file" onChange={handleFile} />
               </label>
-              <input type="submit" value="Postar" />
+              {!loadingPhoto && <input type="submit" value="Postar" />}
+              {loadingPhoto && <input type="submit" value="Aguarde..." disabled />}
             </form>
           </div>
+          {errorPhoto && <Message msg={errorPhoto} type="error" />}
+          {messagePhoto && <Message msg={messagePhoto} type="success" />}
         </>
       )}
+      <div className="user-photos">
+        <h2>Fotos publicadas:</h2>
+        <div className="photos-container">
+          {photos && photos.map(({ _id, title, image }) => (
+            <div className="photo" key={_id}>
+              {image && (
+                <img
+                  src={`${uploads}/photos/${image}`}
+                  alt={title}
+                />
+              )}
+              {id === userAuth.id ? (
+                <div className="actions">
+                  <Link to={`/photos/${_id}`}>
+                    <BsFillEyeFill />
+                  </Link>
+                  <BsPencilFill />
+                  <BsXLg />
+                </div>
+              ) : (
+                <Link className="btn" to={`/photos/${_id}`}>
+                  Ver
+                </Link>
+              )}
+            </div>
+          ))}
+          {photos.length === 0 && <p>Ainda não há fotos publicadas.</p>}
+        </div>
+      </div>
     </div>
   );
 }
