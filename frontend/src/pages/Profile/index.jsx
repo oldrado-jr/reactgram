@@ -8,7 +8,8 @@ import {
   deletePhoto,
   getUserPhotos,
   publishPhoto,
-  resetMessage
+  resetMessage,
+  updatePhoto
 } from '../../slices/photoSlice';
 import { uploads } from '../../utils/config';
 import Message from '../../components/Message';
@@ -32,8 +33,13 @@ function Profile() {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
 
+  const [editId, setEditId] = useState('');
+  const [editTitle, setEditTitle] = useState('');
+  const [editImage, setEditImage] = useState('');
+
   // New form end edit form refs
   const newPhotoForm = useRef();
+  const editPhotoForm = useRef();
 
   // Load user data
   useEffect(() => {
@@ -83,6 +89,45 @@ function Profile() {
     resetComponentMessage();
   };
 
+  // Show or hide forms
+  const hideOrShowForms = () => {
+    newPhotoForm.current.classList.toggle('hide');
+    editPhotoForm.current.classList.toggle('hide');
+  };
+
+  // Update a photo
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+    const photoData = {
+      id: editId,
+      title: editTitle,
+    };
+
+    dispatch(updatePhoto(photoData));
+
+    resetComponentMessage();
+  };
+
+  // Open edit form
+  const handleEdit = (photo) => {
+    if (editPhotoForm.current.classList.contains('hide')) {
+      hideOrShowForms();
+    }
+
+    const { _id, title, image } = photo;
+
+    setEditId(_id);
+    setEditTitle(title);
+    setEditImage(image);
+  };
+
+  const handleCancelEdit = (e) => {
+    e.preventDefault();
+
+    hideOrShowForms();
+  };
+
   if (loading) {
     return <p>Carregando...</p>;
   }
@@ -123,6 +168,30 @@ function Profile() {
               {loadingPhoto && <input type="submit" value="Aguarde..." disabled />}
             </form>
           </div>
+          <div className="edit-photo hide" ref={editPhotoForm}>
+            <p>Editando:</p>
+            {editImage && (
+              <img
+                src={`${uploads}/photos/${editImage}`}
+                alt={editTitle}
+              />
+            )}
+            <form onSubmit={handleUpdate}>
+              <input
+                type="text"
+                value={editTitle || ''}
+                onChange={(e) => setEditTitle(e.target.value)}
+              />
+              <input type="submit" value="Atualizar" />
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={handleCancelEdit}
+              >
+                Cancelar edição
+              </button>
+            </form>
+          </div>
           {errorPhoto && <Message msg={errorPhoto} type="error" />}
           {messagePhoto && <Message msg={messagePhoto} type="success" />}
         </>
@@ -130,24 +199,24 @@ function Profile() {
       <div className="user-photos">
         <h2>Fotos publicadas:</h2>
         <div className="photos-container">
-          {photos && photos.map(({ _id, title, image }) => (
-            <div className="photo" key={_id}>
-              {image && (
+          {photos && photos.map((photo) => (
+            <div className="photo" key={photo._id}>
+              {photo.image && (
                 <img
-                  src={`${uploads}/photos/${image}`}
-                  alt={title}
+                  src={`${uploads}/photos/${photo.image}`}
+                  alt={photo.title}
                 />
               )}
               {id === userAuth.id ? (
                 <div className="actions">
-                  <Link to={`/photos/${_id}`}>
+                  <Link to={`/photos/${photo._id}`}>
                     <BsFillEyeFill />
                   </Link>
-                  <BsPencilFill />
-                  <BsXLg onClick={() => handleDelete(_id)} />
+                  <BsPencilFill onClick={() => handleEdit(photo)} />
+                  <BsXLg onClick={() => handleDelete(photo._id)} />
                 </div>
               ) : (
-                <Link className="btn" to={`/photos/${_id}`}>
+                <Link className="btn" to={`/photos/${photo._id}`}>
                   Ver
                 </Link>
               )}
