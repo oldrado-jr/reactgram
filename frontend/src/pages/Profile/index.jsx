@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BsFillEyeFill, BsPencilFill, BsXLg } from 'react-icons/bs';
 
 import { getUserDetails } from '../../slices/userSlice';
-import { getUserPhotos, publishPhoto, resetMessage } from '../../slices/photoSlice';
+import {
+  deletePhoto,
+  getUserPhotos,
+  publishPhoto,
+  resetMessage
+} from '../../slices/photoSlice';
 import { uploads } from '../../utils/config';
 import Message from '../../components/Message';
 
@@ -36,6 +41,12 @@ function Profile() {
     dispatch(getUserPhotos(id));
   }, [dispatch, id]);
 
+  const resetComponentMessage = () => {
+    setTimeout(() => {
+      dispatch(resetMessage());
+    }, 2000);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -55,9 +66,7 @@ function Profile() {
 
     setTitle('');
 
-    setTimeout(() => {
-      dispatch(resetMessage());
-    }, 2000);
+    resetComponentMessage();
   };
 
   // Change image state
@@ -65,6 +74,13 @@ function Profile() {
     const image = e.target.files[0];
 
     setImage(image);
+  };
+
+  // Delete a photo
+  const handleDelete = (id) => {
+    dispatch(deletePhoto(id));
+
+    resetComponentMessage();
   };
 
   if (loading) {
@@ -128,7 +144,7 @@ function Profile() {
                     <BsFillEyeFill />
                   </Link>
                   <BsPencilFill />
-                  <BsXLg />
+                  <BsXLg onClick={() => handleDelete(_id)} />
                 </div>
               ) : (
                 <Link className="btn" to={`/photos/${_id}`}>
