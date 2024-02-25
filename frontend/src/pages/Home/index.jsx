@@ -1,6 +1,54 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { getPhotos, like, resetMessage } from '../../slices/photoSlice';
+
+import PhotoItem from '../../components/PhotoItem';
+import LikeContainer from '../../components/LikeContainer';
+
+import './styles.css';
+
 function Home() {
+  const dispatch = useDispatch();
+
+  const { user } = useSelector((state) => state.auth);
+  const { photos, loading } = useSelector((state) => state.photo);
+
+  // Load all photos
+  useEffect(() => {
+    dispatch(getPhotos());
+  }, [dispatch]);
+
+  // Like a photo
+  const handleLike = (photo) => {
+    dispatch(like(photo._id));
+
+    setTimeout(() => {
+      dispatch(resetMessage());
+    }, 2000);
+  };
+
+  if (loading) {
+    return <p>Carregando...</p>;
+  }
+
   return (
-    <div>Home</div>
+    <div id="home">
+      {photos && photos.map((photo) => (
+        <div key={photo._id}>
+          <PhotoItem photo={photo} />
+          <LikeContainer photo={photo} user={user} handleLike={() => handleLike(photo)} />
+          <Link className="btn" to={`/photos/${photo._id}`}>Ver mais</Link>
+        </div>
+      ))}
+      {photos && photos.length === 0 && (
+        <h2 className="no-photos">
+          Ainda não há fotos publicadas,&nbsp;
+          <Link to={`/users/${user.id}`}>clique aqui</Link>.
+        </h2>
+      )}
+    </div>
   );
 }
 

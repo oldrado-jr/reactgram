@@ -91,6 +91,19 @@ const comment = async (data, id, token) => {
   }
 };
 
+// Get all photos
+const getPhotos = async (token) => {
+  const config = requestConfig('GET', null, token);
+
+  try {
+    return await fetch(`${api}/photos`, config)
+      .then((response) => response.json())
+      .catch((err) => err);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const photoService = {
   publishPhoto,
   getUserPhotos,
@@ -99,6 +112,7 @@ const photoService = {
   getPhoto,
   like,
   comment,
+  getPhotos,
 };
 
 export default photoService;
