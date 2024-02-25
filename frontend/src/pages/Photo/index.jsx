@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPhoto, like } from '../../slices/photoSlice';
+import { getPhoto, like, resetMessage } from '../../slices/photoSlice';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
+import Message from '../../components/Message';
 
 import './styles.css';
 
@@ -24,6 +25,10 @@ function Photo() {
 
   const handleLike = () => {
     dispatch(like(photo._id));
+
+    setTimeout(() => {
+      dispatch(resetMessage());
+    }, 2000);
   };
 
   if (loading) {
@@ -34,6 +39,10 @@ function Photo() {
     <div id="photo">
       <PhotoItem photo={photo} />
       <LikeContainer photo={photo} user={user} handleLike={handleLike} />
+      <div className="message-container">
+        {error && <Message msg={error} type="error" />}
+        {message && <Message msg={message} type="success" />}
+      </div>
     </div>
   );
 }
