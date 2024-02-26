@@ -9,6 +9,7 @@ import useResetComponentMessage from '../../hooks/useResetComponentMessage';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
+import Loading from '../../components/Loading';
 
 import './styles.css';
 
@@ -36,7 +37,7 @@ function Search() {
   };
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <Loading />;
   }
 
   return (

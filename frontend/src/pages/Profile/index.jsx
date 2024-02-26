@@ -17,6 +17,7 @@ import { uploads } from '../../utils/config';
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
 
 import Message from '../../components/Message';
+import Loading from '../../components/Loading';
 
 import './styles.css';
 
@@ -129,7 +130,7 @@ function Profile() {
   };
 
   if (loading) {
-    return <p>Carregando...</p>;
+    return <Loading />;
   }
 
   return (
