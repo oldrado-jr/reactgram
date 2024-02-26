@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { uploads } from '../../utils/config';
 import { comment, getPhoto, like, resetMessage } from '../../slices/photoSlice';
 
+import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
 import Message from '../../components/Message';
@@ -16,6 +18,8 @@ function Photo() {
 
   const dispatch = useDispatch();
 
+  const resetComponentMessage = useResetComponentMessage(dispatch, resetMessage);
+
   const { user } = useSelector((state) => state.auth);
   const { photo, loading, error, message } = useSelector((state) => state.photo);
 
@@ -25,12 +29,6 @@ function Photo() {
   useEffect(() => {
     dispatch(getPhoto(id));
   }, [dispatch, id]);
-
-  const resetComponentMessage = () => {
-    setTimeout(() => {
-      dispatch(resetMessage());
-    }, 2000);
-  };
 
   // Add a like
   const handleLike = () => {

@@ -11,7 +11,11 @@ import {
   resetMessage,
   updatePhoto
 } from '../../slices/photoSlice';
+
 import { uploads } from '../../utils/config';
+
+import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+
 import Message from '../../components/Message';
 
 import './styles.css';
@@ -20,6 +24,8 @@ function Profile() {
   const { id } = useParams();
 
   const dispatch = useDispatch();
+
+  const resetComponentMessage = useResetComponentMessage(dispatch, resetMessage);
 
   const { user, loading } = useSelector((state) => state.user);
   const { user: userAuth } = useSelector((state) => state.auth);
@@ -46,12 +52,6 @@ function Profile() {
     dispatch(getUserDetails(id));
     dispatch(getUserPhotos(id));
   }, [dispatch, id]);
-
-  const resetComponentMessage = () => {
-    setTimeout(() => {
-      dispatch(resetMessage());
-    }, 2000);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { like, resetMessage, searchPhotos } from '../../slices/photoSlice';
 
 import useQuery from '../../hooks/useQuery';
+import useResetComponentMessage from '../../hooks/useResetComponentMessage';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
@@ -16,6 +17,8 @@ function Search() {
   const search = query.get('q');
 
   const dispatch = useDispatch();
+
+  const resetComponentMessage = useResetComponentMessage(dispatch, resetMessage);
 
   const { user } = useSelector((state) => state.auth);
   const { photos, loading } = useSelector((state) => state.photo);
@@ -29,9 +32,7 @@ function Search() {
   const handleLike = (photo) => {
     dispatch(like(photo._id));
 
-    setTimeout(() => {
-      dispatch(resetMessage());
-    }, 2000);
+    resetComponentMessage();
   };
 
   if (loading) {

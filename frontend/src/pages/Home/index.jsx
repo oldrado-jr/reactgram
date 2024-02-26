@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { getPhotos, like, resetMessage } from '../../slices/photoSlice';
 
+import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
 
@@ -11,6 +13,8 @@ import './styles.css';
 
 function Home() {
   const dispatch = useDispatch();
+
+  const resetComponentMessage = useResetComponentMessage(dispatch, resetMessage);
 
   const { user } = useSelector((state) => state.auth);
   const { photos, loading } = useSelector((state) => state.photo);
@@ -24,9 +28,7 @@ function Home() {
   const handleLike = (photo) => {
     dispatch(like(photo._id));
 
-    setTimeout(() => {
-      dispatch(resetMessage());
-    }, 2000);
+    resetComponentMessage();
   };
 
   if (loading) {
