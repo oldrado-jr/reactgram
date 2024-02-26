@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { like, resetMessage, searchPhotos } from '../../slices/photoSlice';
+import { resetMessage, searchPhotos } from '../../slices/photoSlice';
 
 import useQuery from '../../hooks/useQuery';
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
 import useCheckAuth from '../../hooks/useCheckAuth';
+import useHandleLike from '../../hooks/useHandleLike';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
@@ -33,11 +34,7 @@ function Search() {
   }, [dispatch, search]);
 
   // Like a photo
-  const handleLike = (photo) => {
-    dispatch(like(photo._id));
-
-    resetComponentMessage();
-  };
+  const handleLike = useHandleLike(dispatch, resetComponentMessage);
 
   if (loading) {
     return <Loading />;

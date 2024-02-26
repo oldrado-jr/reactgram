@@ -3,10 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { uploads } from '../../utils/config';
-import { comment, getPhoto, like, resetMessage } from '../../slices/photoSlice';
+import { comment, getPhoto, resetMessage } from '../../slices/photoSlice';
 
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
 import useCheckAuth from '../../hooks/useCheckAuth';
+import useHandleLike from '../../hooks/useHandleLike';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
@@ -35,11 +36,7 @@ function Photo() {
   }, [dispatch, id]);
 
   // Add a like
-  const handleLike = () => {
-    dispatch(like(photo._id));
-
-    resetComponentMessage();
-  };
+  const handleLike = useHandleLike(dispatch, resetComponentMessage);
 
   // Add a comment
   const handleComment = (e) => {
@@ -64,7 +61,7 @@ function Photo() {
   return (
     <div id="photo">
       <PhotoItem photo={photo} />
-      <LikeContainer photo={photo} user={user} handleLike={handleLike} />
+      <LikeContainer photo={photo} user={user} handleLike={() => handleLike(photo)} />
       <div className="message-container">
         {error && <Message msg={error} type="error" />}
         {message && <Message msg={message} type="success" />}
