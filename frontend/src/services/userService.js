@@ -1,13 +1,11 @@
-import { api, requestConfig } from '../utils/config';
+import { api, fetchAPI, requestConfig } from '../utils/config';
 
 // Get user details
 const profile = async (data, token) => {
   const config = requestConfig('GET', data, token);
 
   try {
-    return await fetch(`${api}/users/profile`, config)
-      .then((response) => response.json())
-      .catch((err) => err);
+    return await fetchAPI(`${api}/users/profile`, config);
   } catch (error) {
     console.error(error);
   }
@@ -18,9 +16,7 @@ const updateProfile = async (data, token) => {
   const config = requestConfig('PUT', data, token, true);
 
   try {
-    return await fetch(`${api}/users`, config)
-      .then((response) => response.json())
-      .catch((err) => err);
+    return await fetchAPI(`${api}/users`, config);
   } catch (error) {
     console.error(error);
   }
@@ -31,9 +27,7 @@ const getUserDetails = async (id) => {
   const config = requestConfig('GET');
 
   try {
-    return await fetch(`${api}/users/${id}`, config)
-      .then((response) => response.json())
-      .catch((err) => err);
+    return await fetchAPI(`${api}/users/${id}`, config);
   } catch (error) {
     console.error(error);
   }

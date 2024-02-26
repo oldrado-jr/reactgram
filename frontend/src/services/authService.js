@@ -1,13 +1,11 @@
-import { api, requestConfig } from '../utils/config';
+import { api, fetchAPI, requestConfig } from '../utils/config';
 
 // Register an user
 const register = async (data) => {
   const config = requestConfig('POST', data);
 
   try {
-    const response = await fetch(`${api}/users/register`, config)
-      .then((response) => response.json())
-      .catch((err) => err);
+    const response = await fetchAPI(`${api}/users/register`, config);
 
     if (response && !response.errors) {
       localStorage.setItem('user', JSON.stringify(response));
@@ -29,9 +27,7 @@ const login = async (data) => {
   const config = requestConfig('POST', data);
 
   try {
-    const response = await fetch(`${api}/users/login`, config)
-      .then((response) => response.json())
-      .catch((err) => err);
+    const response = await fetchAPI(`${api}/users/login`, config);
 
     if (response && !response.errors) {
       localStorage.setItem('user', JSON.stringify(response));

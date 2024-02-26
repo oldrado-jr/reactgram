@@ -31,3 +31,17 @@ export const requestConfig = (method, data, token = null, image = false) => {
 
   return config;
 };
+
+export const fetchAPI = async (url, config) => {
+  try {
+    const response = await fetch(url, config);
+
+    if (response.status === 401) {
+      localStorage.removeItem('user');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
