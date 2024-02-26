@@ -6,6 +6,7 @@ import { uploads } from '../../utils/config';
 import { comment, getPhoto, like, resetMessage } from '../../slices/photoSlice';
 
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+import useCheckAuth from '../../hooks/useCheckAuth';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
@@ -15,6 +16,8 @@ import Loading from '../../components/Loading';
 import './styles.css';
 
 function Photo() {
+  useCheckAuth();
+
   const { id } = useParams();
 
   const dispatch = useDispatch();

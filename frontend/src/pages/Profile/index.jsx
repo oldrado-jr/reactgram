@@ -15,6 +15,7 @@ import {
 import { uploads } from '../../utils/config';
 
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+import useCheckAuth from '../../hooks/useCheckAuth';
 
 import Message from '../../components/Message';
 import Loading from '../../components/Loading';
@@ -22,6 +23,8 @@ import Loading from '../../components/Loading';
 import './styles.css';
 
 function Profile() {
+  useCheckAuth();
+
   const { id } = useParams();
 
   const dispatch = useDispatch();

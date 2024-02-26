@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getPhotos, like, resetMessage } from '../../slices/photoSlice';
 
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+import useCheckAuth from '../../hooks/useCheckAuth';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
@@ -13,6 +14,8 @@ import Loading from '../../components/Loading';
 import './styles.css';
 
 function Home() {
+  useCheckAuth();
+
   const dispatch = useDispatch();
 
   const resetComponentMessage = useResetComponentMessage(dispatch, resetMessage);

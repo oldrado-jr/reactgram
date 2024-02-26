@@ -6,6 +6,7 @@ import { like, resetMessage, searchPhotos } from '../../slices/photoSlice';
 
 import useQuery from '../../hooks/useQuery';
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+import useCheckAuth from '../../hooks/useCheckAuth';
 
 import PhotoItem from '../../components/PhotoItem';
 import LikeContainer from '../../components/LikeContainer';
@@ -14,6 +15,8 @@ import Loading from '../../components/Loading';
 import './styles.css';
 
 function Search() {
+  useCheckAuth();
+
   const query = useQuery();
   const search = query.get('q');
 

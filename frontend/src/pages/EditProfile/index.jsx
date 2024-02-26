@@ -5,12 +5,15 @@ import { profile, resetMessage, updateProfile } from '../../slices/userSlice';
 import { uploads } from '../../utils/config';
 
 import useResetComponentMessage from '../../hooks/useResetComponentMessage';
+import useCheckAuth from '../../hooks/useCheckAuth';
 
 import Message from '../../components/Message';
 
 import './styles.css';
 
 function EditProfile() {
+  useCheckAuth();
+
   const dispatch = useDispatch();
 
   const resetComponentMessage = useResetComponentMessage(dispatch, resetMessage);
