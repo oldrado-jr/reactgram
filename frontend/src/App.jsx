@@ -15,6 +15,7 @@ import EditProfile from './pages/EditProfile';
 import Profile from './pages/Profile';
 import Photo from './pages/Photo';
 import Search from './pages/Search';
+import Page404 from './pages/Page404';
 
 import './App.css';
 
@@ -38,6 +39,7 @@ function App() {
             <Route path="/register" element={!auth ? <Register /> : <Navigate to="/" />} />
             <Route path="/photos/:id" element={auth ? <Photo /> : <Navigate to="/login" />} />
             <Route path="/search" element={auth ? <Search /> : <Navigate to="/login" />} />
+            <Route path="*" element={<Page404 />} />
           </Routes>
         </div>
         <Footer />
