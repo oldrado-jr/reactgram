@@ -5,11 +5,12 @@ const User = require('../models/User');
 const Photo = require('../models/Photo');
 
 const jwtSecret = process.env.JWT_SECRET || '';
+const jwtExpiresIn = process.env.JWT_EXPIRATION || '';
 
 // Generate user token
 const generateToken = (id) => {
   return jwt.sign({ id }, jwtSecret, {
-    expiresIn: '1h',
+    expiresIn: jwtExpiresIn,
   });
 };
 
